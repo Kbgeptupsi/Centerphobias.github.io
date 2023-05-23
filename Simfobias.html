@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimularFobias</title>
+
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+        
+        label {
+          display: block;
+          margin-bottom: 10px;
+        }
+        
+        select, input[type="number"] {
+          width: 200px;
+          padding: 5px;
+          font-size: 16px;
+        }
+        
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+        }
+      </style>
+</head>
+<body>
+    <h1>Formulario de Fobias</h1>
+  
+    <form id="fobiaForm">
+      <label for="tipoFobia">Tipo de fobia:</label>
+      <select id="tipoFobia" name="tipoFobia">
+        <option value="tripofobia">Tripofobia</option>
+        <option value="acrofobia">Acrofobia</option>
+        <option value="claustrofobia">Claustrofobia</option>
+        <!-- Agrega más opciones de fobias aquí -->
+      </select>
+      
+      <label for="frecuenciaInicial">Pulso frecuencia cardiaca inicial:</label>
+      <input type="number" id="frecuenciaInicial" name="frecuenciaInicial" min="0" max="200">
+      
+      <label for="frecuenciaFinal">Pulso frecuencia cardiaca final:</label>
+      <input type="number" id="frecuenciaFinal" name="frecuenciaFinal" min="0" max="200">
+      
+      <button type="button" onclick="simularFobia()">Simular fobia</button>
+    </form>
+  
+    <div id="videoContainer"></div>
+  
+    <script>
+      function simularFobia() {
+        var tipoFobia = document.getElementById("tipoFobia").value;
+        
+        // Reproducir video relacionado con la fobia seleccionada
+        var videoContainer = document.getElementById("videoContainer");
+        videoContainer.innerHTML = '<iframe width="560" height="315" src="' + obtenerVideoFobia(tipoFobia) + '" frameborder="0" allowfullscreen></iframe>';
+        
+        var frecuenciaFinal = parseInt(document.getElementById("frecuenciaFinal").value);
+        
+        // Mostrar modal de alerta si la frecuencia cardiaca final está fuera del rango normal
+        if (frecuenciaFinal < 60) {
+          mostrarAlerta("¡Alerta!", "Bradicardia");
+        } else if (frecuenciaFinal > 80) {
+          mostrarAlerta("¡Alerta!", "Ansiedad-Pánico, Estrés, Irritabilidad");
+        } else {
+          // Frecuencia cardiaca final dentro del rango normal
+        }
+      }
+      
+      function obtenerVideoFobia(tipoFobia) {
+        // Define los enlaces a los videos relacionados con cada tipo de fobia
+        var videos = {
+          tripofobia: "https://www.youtube.com/embed/video_tripofobia",
+          acrofobia: "https://www.youtube.com/embed/video_acrofobia",
+          claustrofobia: "https://www.youtube.com/embed/video_claustrofobia"
+          // Agrega más enlaces de videos aquí
+        };
+        
+        return videos[tipoFobia];
+      }
+      
+      function mostrarAlerta(titulo, mensaje) {
+        alert(titulo + "\n\n" + mensaje);
+      }
+    </script>
+</body>
+</html>

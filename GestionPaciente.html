@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GestionPaciente</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+</head>
+<body>
+
+    <h1 class="titulopaciente">Registrar Pacientes</h1>
+    <form id="clienteForm">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+        
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" required>
+        
+        <label for="celular">Celular:</label>
+        <input type="text" id="celular" required>
+        
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" required>
+          <option value="">Seleccione</option>
+          <option value="masculino">Masculino</option>
+          <option value="femenino">Femenino</option>
+        </select>
+        
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" required>
+        
+        <label for="fobia">Tipo de Fobia:</label>
+        <input type="text" id="fobia" required>
+        
+        <label for="correo">Correo Personal:</label>
+        <input type="email" id="correo" required>
+        
+        <button type="submit">Guardar</button>
+        </form>
+    
+    
+
+        <table id="clientesTable">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Celular</th>
+                <th>Sexo</th>
+                <th>Edad</th>
+                <th>Tipo de Fobia</th>
+                <th>Correo Personal</th>
+                <td class="action-buttons">
+                    <button class="edit">Editar</button>
+                    <button class="delete">Eliminar</button>
+                  </td>
+              </tr>
+            </thead>
+            <tbody id="clientesTableBody"></tbody>
+          </table>
+
+          <script>
+             const clienteForm = document.getElementById('clienteForm');
+    const clientesTableBody = document.getElementById('clientesTableBody');
+
+    clienteForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const nombre = document.getElementById('nombre').value;
+      const apellidos = document.getElementById('apellidos').value;
+      const celular = document.getElementById('celular').value;
+      const sexo = document.getElementById('sexo').value;
+      const edad = document.getElementById('edad').value;
+      const fobia = document.getElementById('fobia').value;
+      const correo = document.getElementById('correo').value;
+
+      if (validarFormulario()) {
+        const cliente = { nombre, apellidos, celular, sexo, edad, fobia, correo };
+        guardarCliente(cliente);
+        mostrarClientes();
+        limpiarFormulario();
+      }
+    });
+
+    function validarFormulario() {
+      const nombre = document.getElementById('nombre').value;
+      const apellidos = document.getElementById('apellidos').value;
+      const celular = document.getElementById('celular').value;
+      const sexo = document.getElementById('sexo').value;
+      const edad = document.getElementById('edad').value;
+      const fobia = document.getElementById('fobia').value;
+      const correo = document.getElementById('correo').value;
+      const errorElement = document.getElementById('error');
+
+      if (!nombre || !apellidos || !celular || !sexo || !edad || !fobia || !correo) {
+        errorElement.innerHTML = 'Por favor, complete todos los campos.';
+        return false;
+      }
+      
+      return true;
+    }
+
+    let clientes = [];
+
+    // Recuperar clientes almacenados en localStorage al cargar la página
+    if (localStorage.getItem('clientes')) {
+      clientes = JSON.parse(localStorage.getItem('clientes'));
+    }
+
+    function guardarCliente(cliente) {
+      clientes.push(cliente);
+
+      // Guardar en localStorage
+      localStorage.setItem('clientes', JSON.stringify(clientes));
+    }
+
+    function mostrarClientes() {
+      clientesTableBody.innerHTML = '';
+      
+      clientes.forEach(function(cliente) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${cliente.nombre}</td>
+          <td>${cliente.apellidos}</td>
+          <td>${cliente.celular}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.edad}</td>
+          <td>${cliente.fobia}</td>
+          <td>${cliente.correo}</td>
+        `;
+        clientesTableBody.appendChild(row);
+      });
+    }
+
+    function limpiarFormulario() {
+      clienteForm.reset();
+    }
+    
+    // Mostrar clientes almacenados al cargar la página
+    mostrarClientes();
+          </script>
+    
+</body>
+</html>
